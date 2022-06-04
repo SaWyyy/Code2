@@ -2,13 +2,14 @@
 BIN=/usr/local/bin
 LIB=/usr/lib
 
+# dodanie reguł przyrostków
+.c.o:
+	gcc -c $<
+
 # tworzenie plikow obiektowych
 field.o: field.c
-	gcc -c $<
 volume.o: volume.c
-	gcc -c $<
 main.o: main.c
-	gcc -c $<
 
 # tworzenie biblioteki statycznej
 libfield.a: field.o
