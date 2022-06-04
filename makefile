@@ -2,6 +2,8 @@
 BIN=/usr/local/bin
 LIB=/usr/lib
 
+INCLUDE=./include
+
 # dodanie reguł wzorców do bibliotek
 lib%.a: %.o
 	ar rs $@ $^
@@ -10,7 +12,7 @@ lib%.so: %.o
 
 # dodanie reguł przyrostków
 .c.o:
-	gcc -c $<
+	gcc -c -I $(INCLUDE) $<
 
 # tworzenie plikow obiektowych
 field.o: field.c
@@ -38,11 +40,20 @@ install: Code2
 	else \
 		echo "nie udalo sie zainstalowac Code2";\
 	fi
+	mkdir bin
+	mkdir lib
+	mv libfield.a lib
+	mv libvolume.so lib
+	mv Code2 bin
+
+vpath %.c ./src
+vpath %.h ./include
+vpath %.so ./lib
+vpath %.a ./lib
 
 clean:
-	rm -f *.o
-	rm -f *.so
-	rm -f *.a
-	rm Code2
+	$(RM) *.o *.a *.so Code2
+	rm -r lib
+	rm -r bin
 	sudo rm -f /usr/local/bin/Code2
 	sudo rm -f /usr/lib/libvolume.so
