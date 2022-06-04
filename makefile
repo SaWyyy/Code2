@@ -2,6 +2,12 @@
 BIN=/usr/local/bin
 LIB=/usr/lib
 
+# dodanie reguł wzorców do bibliotek
+lib%.a: %.o
+	ar rs $@ $^
+lib%.so: %.o
+	gcc -shared -o $@ $^
+
 # dodanie reguł przyrostków
 .c.o:
 	gcc -c $<
@@ -13,11 +19,9 @@ main.o: main.c
 
 # tworzenie biblioteki statycznej
 libfield.a: field.o
-	ar rs $@ $<
 
 # tworzenie biblioteki dynamicznej
 libvolume.so: volume.o
-	gcc -shared -o $@ $<
 
 Code2: main.o libfield.a libvolume.so
 	gcc -o $@ $^
